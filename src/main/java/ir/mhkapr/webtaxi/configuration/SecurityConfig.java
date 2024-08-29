@@ -20,7 +20,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(req -> req.requestMatchers("/").permitAll())
+                .authorizeHttpRequests(req -> req.requestMatchers("/register","/authenticate").permitAll()
+                        .anyRequest().authenticated())
                 .sessionManagement(x ->x.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);;

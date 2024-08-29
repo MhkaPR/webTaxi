@@ -1,7 +1,8 @@
 package ir.mhkapr.webtaxi.service;
 
 import ir.mhkapr.webtaxi.DTOs.AuthenticationResponse;
-import ir.mhkapr.webtaxi.DTOs.AuthenticationRequest;
+import ir.mhkapr.webtaxi.DTOs.AuthorizationRequest;
+import ir.mhkapr.webtaxi.DTOs.RegisterRequest;
 import ir.mhkapr.webtaxi.entity.User;
 import ir.mhkapr.webtaxi.entity.enums.Roles;
 import ir.mhkapr.webtaxi.excepption.UserAlreadyExistsException;
@@ -22,7 +23,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-    public AuthenticationResponse register(AuthenticationRequest request) throws UserAlreadyExistsException {
+    public AuthenticationResponse register(RegisterRequest request) throws UserAlreadyExistsException {
         var user = User.builder()
                 .phoneNumber(request.getPhoneNumber())
                 .firstname(request.getFirstname())
@@ -42,7 +43,7 @@ public class AuthenticationService {
                 .token(token)
                 .build();
     }
-    public AuthenticationResponse authenticate(AuthenticationRequest request)
+    public AuthenticationResponse authenticate(AuthorizationRequest request)
     {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
