@@ -8,6 +8,7 @@ import ir.mhkapr.webtaxi.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -23,5 +24,9 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest request){
         return ResponseEntity.ok(authenticationService.login(request));
+    }
+    @GetMapping("/home")
+    public ResponseEntity<String> testAuthentication(){
+        return ResponseEntity.ok("hello from taxi api");
     }
 }
