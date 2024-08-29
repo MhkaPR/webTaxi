@@ -1,5 +1,6 @@
 package ir.mhkapr.webtaxi.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import ir.mhkapr.webtaxi.entity.enums.OrderStatus;
 import ir.mhkapr.webtaxi.entity.enums.OrderType;
 import jakarta.persistence.*;
@@ -29,8 +30,10 @@ public class Order {
     OrderType type;
     Long price;
     @DateTimeFormat(pattern = "yyyy-MM-dd/hh-mm-ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING , pattern = "yyyy-MM-dd/hh-mm-ss")
     Date createdAt;
     @DateTimeFormat(pattern = "yyyy-MM-dd/hh-mm-ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING , pattern = "yyyy-MM-dd/hh-mm-ss")
     Date finishedAt;
     Long userId;
     Long driverId;
