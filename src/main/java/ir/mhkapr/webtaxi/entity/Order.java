@@ -1,0 +1,37 @@
+package ir.mhkapr.webtaxi.entity;
+
+import ir.mhkapr.webtaxi.entity.enums.OrderStatus;
+import ir.mhkapr.webtaxi.entity.enums.OrderType;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.locationtech.jts.geom.Point;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "orders")
+public class Order {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    Long order_id;
+    Point origin;
+    Point destination;
+    @Enumerated(EnumType.ORDINAL)
+    OrderType type;
+    Long price;
+    @DateTimeFormat(pattern = "yyyy-MM-dd/hh-mm-ss")
+    Date createdAt;
+    Long userId;
+    Long driverId;
+    @Enumerated(EnumType.ORDINAL)
+    OrderStatus status;
+}
