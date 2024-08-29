@@ -30,6 +30,8 @@ public class Order {
     Long price;
     @DateTimeFormat(pattern = "yyyy-MM-dd/hh-mm-ss")
     Date createdAt;
+    @DateTimeFormat(pattern = "yyyy-MM-dd/hh-mm-ss")
+    Date finishedAt;
     Long userId;
     Long driverId;
     @Enumerated(EnumType.ORDINAL)
