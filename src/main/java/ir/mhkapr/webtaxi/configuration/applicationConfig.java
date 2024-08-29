@@ -22,7 +22,6 @@ public class applicationConfig {
     public AuthenticationProvider authenticationProvider()
     {
         DaoAuthenticationProvider x = new DaoAuthenticationProvider();
-
         x.setUserDetailsService(userDetailsService());
         x.setPasswordEncoder(passwordEncoder());
         return x;
@@ -30,13 +29,9 @@ public class applicationConfig {
     @Bean
     public UserDetailsService userDetailsService()
     {
-
         return phoneNumber -> userRepository.findByPhoneNumber(phoneNumber)
                 .orElseThrow(() -> new UsernameNotFoundException(" user not found"));
-
     }
-
-    // از منتور پرسیده شود
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();

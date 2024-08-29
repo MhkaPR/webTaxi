@@ -1,7 +1,7 @@
 package ir.mhkapr.webtaxi.service;
 
 import ir.mhkapr.webtaxi.DTOs.AuthenticationResponse;
-import ir.mhkapr.webtaxi.DTOs.AuthorizationRequest;
+import ir.mhkapr.webtaxi.DTOs.LoginRequest;
 import ir.mhkapr.webtaxi.DTOs.RegisterRequest;
 import ir.mhkapr.webtaxi.entity.User;
 import ir.mhkapr.webtaxi.entity.enums.Roles;
@@ -43,7 +43,7 @@ public class AuthenticationService {
                 .token(token)
                 .build();
     }
-    public AuthenticationResponse authenticate(AuthorizationRequest request)
+    public AuthenticationResponse login(LoginRequest request)
     {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
