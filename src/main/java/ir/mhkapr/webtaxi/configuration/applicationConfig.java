@@ -1,5 +1,6 @@
 package ir.mhkapr.webtaxi.configuration;
 
+import ir.mhkapr.webtaxi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,18 +25,13 @@ public class applicationConfig {
 
         x.setUserDetailsService(userDetailsService());
         x.setPasswordEncoder(passwordEncoder());
-
         return x;
-
     }
-
-
     @Bean
     public UserDetailsService userDetailsService()
     {
 
-
-        return username -> userRepository.findByUsername(username)
+        return phoneNumber -> userRepository.findByPhoneNumber(phoneNumber)
                 .orElseThrow(() -> new UsernameNotFoundException(" user not found"));
 
     }
