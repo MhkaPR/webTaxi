@@ -27,6 +27,8 @@ public class User implements UserDetails {
     Long userId;
     String phoneNumber;
     String password;
+    String firstname;
+    String lastname;
     Roles role;
 
 
