@@ -5,6 +5,7 @@ import ir.mhkapr.webtaxi.DTOs.LoginRequest;
 import ir.mhkapr.webtaxi.DTOs.RegisterRequest;
 import ir.mhkapr.webtaxi.entity.User;
 import ir.mhkapr.webtaxi.entity.enums.Role;
+import ir.mhkapr.webtaxi.entity.enums.UserStatus;
 import ir.mhkapr.webtaxi.exception.UserAlreadyExistsException;
 import ir.mhkapr.webtaxi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class AuthenticationService {
                 .lastname(request.getLastname())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
+                .status(UserStatus.INACTIVE)
                 .build();
 
         Optional<User> temp = userRepository.findByPhoneNumber(request.getPhoneNumber());

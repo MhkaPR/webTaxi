@@ -22,7 +22,10 @@ public class Driver {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     User user;
+
+    @Column(columnDefinition = "geometry(Point,4326)")
     Point location;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "vehicle_id")
     Vehicle vehicle;
