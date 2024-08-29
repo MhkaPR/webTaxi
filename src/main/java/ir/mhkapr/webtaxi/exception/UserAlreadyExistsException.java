@@ -1,4 +1,4 @@
-package ir.mhkapr.webtaxi.excepption;
+package ir.mhkapr.webtaxi.exception;
 
 public class UserAlreadyExistsException extends Exception{
 }

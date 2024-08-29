@@ -1,6 +1,6 @@
 package ir.mhkapr.webtaxi.entity;
 
-import ir.mhkapr.webtaxi.entity.enums.Roles;
+import ir.mhkapr.webtaxi.entity.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +27,7 @@ public class User implements UserDetails {
     String password;
     String firstname;
     String lastname;
-    Roles role;
+    Role role;
 
 
     @Override

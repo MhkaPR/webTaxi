@@ -4,8 +4,8 @@ import ir.mhkapr.webtaxi.DTOs.AuthenticationResponse;
 import ir.mhkapr.webtaxi.DTOs.LoginRequest;
 import ir.mhkapr.webtaxi.DTOs.RegisterRequest;
 import ir.mhkapr.webtaxi.entity.User;
-import ir.mhkapr.webtaxi.entity.enums.Roles;
-import ir.mhkapr.webtaxi.excepption.UserAlreadyExistsException;
+import ir.mhkapr.webtaxi.entity.enums.Role;
+import ir.mhkapr.webtaxi.exception.UserAlreadyExistsException;
 import ir.mhkapr.webtaxi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,7 +29,7 @@ public class AuthenticationService {
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Roles.USER)
+                .role(Role.USER)
                 .build();
 
         Optional<User> temp = userRepository.findByPhoneNumber(request.getPhoneNumber());

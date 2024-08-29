@@ -1,6 +1,6 @@
 package ir.mhkapr.webtaxi.entity.enums;
 
-public enum Roles {
+public enum Role {
     USER,
     ADMIN
 }

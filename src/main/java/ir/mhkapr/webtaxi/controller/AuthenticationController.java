@@ -3,7 +3,7 @@ package ir.mhkapr.webtaxi.controller;
 import ir.mhkapr.webtaxi.DTOs.LoginRequest;
 import ir.mhkapr.webtaxi.DTOs.AuthenticationResponse;
 import ir.mhkapr.webtaxi.DTOs.RegisterRequest;
-import ir.mhkapr.webtaxi.excepption.UserAlreadyExistsException;
+import ir.mhkapr.webtaxi.exception.UserAlreadyExistsException;
 import ir.mhkapr.webtaxi.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
