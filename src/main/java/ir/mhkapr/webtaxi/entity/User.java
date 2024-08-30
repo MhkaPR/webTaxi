@@ -22,7 +22,7 @@ import java.util.List;
 @Table(name = "_users")
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long userId;
     String phoneNumber;
     String password;

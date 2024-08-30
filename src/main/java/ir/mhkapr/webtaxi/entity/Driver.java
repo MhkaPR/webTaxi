@@ -16,7 +16,7 @@ import org.locationtech.jts.geom.Point;
 @Table(name = "drivers")
 public class Driver {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long driver_id;
 
     @OneToOne(cascade = CascadeType.ALL)

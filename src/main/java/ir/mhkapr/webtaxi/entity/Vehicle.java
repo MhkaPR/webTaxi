@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "vehicles")
 public class Vehicle {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long vehicle_id;
     String licencePlate;
     @Enumerated(EnumType.ORDINAL)
