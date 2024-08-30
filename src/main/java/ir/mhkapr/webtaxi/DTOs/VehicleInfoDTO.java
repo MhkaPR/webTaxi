@@ -1,6 +1,8 @@
 package ir.mhkapr.webtaxi.DTOs;
 
 import ir.mhkapr.webtaxi.entity.enums.VehicleType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,5 +16,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class VehicleInfoDTO {
     String licencePlate;
-    VehicleType type;
+    VehicleType vehicleType;
 }

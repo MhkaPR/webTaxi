@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface DriverRepository extends JpaRepository<Driver,Long> {
 
-    @Query(value = "",nativeQuery = true)
-    public Optional<Driver> findDriverByOrigin(Point origin);
+//    @Query(value = "",nativeQuery = true)
+//    public Optional<Driver> findDriverByOrigin(Point origin);
 
 }

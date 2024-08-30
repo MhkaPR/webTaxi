@@ -4,6 +4,7 @@ import ir.mhkapr.webtaxi.DTOs.DriverAuthenticationResponse;
 import ir.mhkapr.webtaxi.DTOs.DriverRegisterRequest;
 import ir.mhkapr.webtaxi.entity.Driver;
 import ir.mhkapr.webtaxi.entity.User;
+import ir.mhkapr.webtaxi.entity.Vehicle;
 import ir.mhkapr.webtaxi.exception.UserAlreadyExistsException;
 import ir.mhkapr.webtaxi.exception.UserNotFoundException;
 import ir.mhkapr.webtaxi.mapper.UserUserInfoDTOMapper;
