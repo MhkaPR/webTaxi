@@ -1,10 +1,12 @@
 package ir.mhkapr.webtaxi.service;
 
+import com.fasterxml.jackson.databind.ser.std.StdArraySerializers;
 import ir.mhkapr.webtaxi.DTOs.DriverAuthenticationResponse;
 import ir.mhkapr.webtaxi.DTOs.DriverRegisterRequest;
 import ir.mhkapr.webtaxi.entity.Driver;
 import ir.mhkapr.webtaxi.entity.User;
 import ir.mhkapr.webtaxi.entity.Vehicle;
+import ir.mhkapr.webtaxi.exception.DriverAlreadyExistsException;
 import ir.mhkapr.webtaxi.exception.UserAlreadyExistsException;
 import ir.mhkapr.webtaxi.exception.UserNotFoundException;
 import ir.mhkapr.webtaxi.mapper.UserUserInfoDTOMapper;
@@ -27,17 +29,22 @@ public class DriverService {
     private final DriverRepository driverRepository;
     private final UserRepository userRepository;
     public DriverAuthenticationResponse register(DriverRegisterRequest request)
-            throws UserAlreadyExistsException, UserNotFoundException {
+            throws UserAlreadyExistsException, UserNotFoundException, DriverAlreadyExistsException {
+
         Point driverLocation = createPoint(request.getLocation().getLongitude(), request.getLocation().getLatitude());
+
         User userOfDriver =  userRepository.findByPhoneNumber(request.getPhoneNumber())
                 .orElseThrow(UserNotFoundException::new);
+
+        if(existsDriverByUserId(userOfDriver.getUserId())) throw new DriverAlreadyExistsException();
+
         Driver newDriver = Driver.builder()
                 .user(userOfDriver)
                 .location(driverLocation)
                 .vehicle(VehicleVehicleInfoDTOMapper.INSTANCE.VehicleInfoDTOToVehicle(request.getVehicleInfo()))
                 .build();
-
         newDriver = driverRepository.save(newDriver);
+
         return DriverAuthenticationResponse.builder()
                 .userInfo(UserUserInfoDTOMapper.INSTANCE.UserToUserInfoDTO(newDriver.getUser()))
                 .vehicleInfo(VehicleVehicleInfoDTOMapper.INSTANCE.VehicleToVehicleInfoDTO(newDriver.getVehicle()))
@@ -46,5 +53,8 @@ public class DriverService {
     private Point createPoint(Double longitude ,Double latitude){
         GeometryFactory geometryFactory = new GeometryFactory();
         return geometryFactory.createPoint(new Coordinate(longitude,latitude));
+    }
+    private Boolean existsDriverByUserId(Long userId){
+       return driverRepository.existsDriverByUserId(userId);
     }
 }

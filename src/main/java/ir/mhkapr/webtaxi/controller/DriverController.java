@@ -2,6 +2,7 @@ package ir.mhkapr.webtaxi.controller;
 
 import ir.mhkapr.webtaxi.DTOs.DriverAuthenticationResponse;
 import ir.mhkapr.webtaxi.DTOs.DriverRegisterRequest;
+import ir.mhkapr.webtaxi.exception.DriverAlreadyExistsException;
 import ir.mhkapr.webtaxi.exception.UserAlreadyExistsException;
 import ir.mhkapr.webtaxi.exception.UserNotFoundException;
 import ir.mhkapr.webtaxi.service.DriverService;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DriverController {
     private final DriverService driverService;
     @PostMapping("/register-driver")
-    public ResponseEntity<DriverAuthenticationResponse> register(@RequestBody DriverRegisterRequest request) throws UserNotFoundException, UserAlreadyExistsException {
+    public ResponseEntity<DriverAuthenticationResponse> register(@RequestBody DriverRegisterRequest request) throws UserNotFoundException, UserAlreadyExistsException, DriverAlreadyExistsException {
        return ResponseEntity.ok(driverService.register(request));
     }
 }
