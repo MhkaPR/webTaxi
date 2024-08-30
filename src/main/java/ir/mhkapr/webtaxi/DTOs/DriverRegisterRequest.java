@@ -13,6 +13,7 @@ import java.awt.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DriverRegisterRequest {
+    String phoneNumber;
     LocationDTO location;
     VehicleInfoDTO vehicleInfo;
 }
