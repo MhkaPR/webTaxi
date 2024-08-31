@@ -28,7 +28,7 @@ public class Order {
     Point destination;
     @Enumerated(EnumType.ORDINAL)
     OrderType type;
-    Long price;
+    Double price;
     @DateTimeFormat(pattern = "yyyy-MM-dd/hh-mm-ss")
     @JsonFormat(shape = JsonFormat.Shape.STRING , pattern = "yyyy-MM-dd/hh-mm-ss")
     Date createdAt;
