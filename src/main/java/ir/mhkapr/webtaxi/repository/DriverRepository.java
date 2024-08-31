@@ -1,6 +1,6 @@
 package ir.mhkapr.webtaxi.repository;
 
-import ir.mhkapr.webtaxi.DTOs.DriverDistanceDTO;
+import ir.mhkapr.webtaxi.DTOs.DriverDistanceProjection;
 import ir.mhkapr.webtaxi.entity.Driver;
 import org.locationtech.jts.geom.Point;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+
 import java.util.Optional;
 
 @Repository
@@ -24,8 +24,7 @@ public interface DriverRepository extends JpaRepository<Driver,Long> {
             "st_transform(drivers.location,3857) , " +
             "st_transform(st_setsrid(:point , 4326),3857)) as distance " +
             "from drivers order by distance limit 1", nativeQuery = true)
-    public Optional<DriverDistanceDTO> findDriversFromPoint(@Param("point") Point point);
-
+    public Optional<DriverDistanceProjection> findDriversFromPoint(@Param("point") Point point);
 
 
 
