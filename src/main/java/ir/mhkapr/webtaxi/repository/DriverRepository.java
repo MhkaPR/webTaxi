@@ -25,7 +25,4 @@ public interface DriverRepository extends JpaRepository<Driver,Long> {
             "st_transform(st_setsrid(:point , 4326),3857)) as distance " +
             "from drivers order by distance limit 1", nativeQuery = true)
     public Optional<DriverDistanceProjection> findDriversFromPoint(@Param("point") Point point);
-
-
-
 }
