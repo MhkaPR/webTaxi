@@ -6,6 +6,7 @@ import ir.mhkapr.webtaxi.DTOs.DriverRegisterRequest;
 import ir.mhkapr.webtaxi.entity.Driver;
 import ir.mhkapr.webtaxi.entity.User;
 import ir.mhkapr.webtaxi.entity.Vehicle;
+import ir.mhkapr.webtaxi.entity.enums.Role;
 import ir.mhkapr.webtaxi.exception.DriverAlreadyExistsException;
 import ir.mhkapr.webtaxi.exception.UserAlreadyExistsException;
 import ir.mhkapr.webtaxi.exception.UserNotFoundException;
@@ -44,6 +45,9 @@ public class DriverService {
                 .vehicle(VehicleVehicleInfoDTOMapper.INSTANCE.VehicleInfoDTOToVehicle(request.getVehicleInfo()))
                 .build();
         newDriver = driverRepository.save(newDriver);
+
+        userOfDriver.setRole(Role.DRIVER);
+        userRepository.save(userOfDriver);
 
         return DriverAuthenticationResponse.builder()
                 .userInfo(UserUserInfoDTOMapper.INSTANCE.UserToUserInfoDTO(newDriver.getUser()))
