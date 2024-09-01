@@ -33,6 +33,8 @@ public class User implements UserDetails {
     @Enumerated(EnumType.ORDINAL)
     UserStatus status;
 
+    @OneToMany(mappedBy = "userId" , fetch = FetchType.EAGER)
+    List<Order> orders;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

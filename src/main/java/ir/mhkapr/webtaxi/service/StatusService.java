@@ -1,6 +1,5 @@
 package ir.mhkapr.webtaxi.service;
 
-import com.sun.jdi.event.StepEvent;
 import ir.mhkapr.webtaxi.DTOs.DriverInfoDTO;
 import ir.mhkapr.webtaxi.DTOs.LocationDTO;
 import ir.mhkapr.webtaxi.DTOs.OrderResponse;
@@ -9,13 +8,11 @@ import ir.mhkapr.webtaxi.entity.Driver;
 import ir.mhkapr.webtaxi.entity.Order;
 import ir.mhkapr.webtaxi.entity.User;
 import ir.mhkapr.webtaxi.entity.enums.UserStatus;
-import ir.mhkapr.webtaxi.mapper.PointLocationDTOMapper;
 import ir.mhkapr.webtaxi.mapper.UserUserInfoDTOMapper;
 import ir.mhkapr.webtaxi.repository.DriverRepository;
 import ir.mhkapr.webtaxi.repository.OrderRepository;
 import ir.mhkapr.webtaxi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.bridge.IMessage;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -41,8 +38,14 @@ public class StatusService {
         else {
             Order order = orderRepository.findPendingOrderByUserId(user.getUserId()).orElseThrow();
 
-            LocationDTO origin = PointLocationDTOMapper.INSTANCE.pointToLocationDTO(order.getOrigin());
-            LocationDTO destination = PointLocationDTOMapper.INSTANCE.pointToLocationDTO(order.getDestination());
+            LocationDTO origin = LocationDTO.builder()
+                    .longitude(order.getOrigin().getX())
+                    .latitude(order.getOrigin().getY())
+                    .build();
+            LocationDTO destination = LocationDTO.builder()
+                    .longitude(order.getDestination().getX())
+                    .latitude(order.getDestination().getY())
+                    .build();
 
             Driver driver = driverRepository.findById(order.getDriverId()).orElseThrow();
             DriverInfoDTO driverInfo = DriverInfoDTO.builder()

@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
 import org.locationtech.jts.geom.Point;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -29,4 +31,7 @@ public class Driver {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "vehicle_id")
     Vehicle vehicle;
+
+    @OneToMany(mappedBy = "driverId" , fetch = FetchType.EAGER)
+    List<Order> orders;
 }
