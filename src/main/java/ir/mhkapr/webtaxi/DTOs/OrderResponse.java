@@ -12,8 +12,8 @@ import org.locationtech.jts.geom.Point;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderResponse {
-    Point origin;
-    Point destination;
+    LocationDTO origin;
+    LocationDTO destination;
     OrderType type;
     Double price;
     DriverInfoDTO driverInfo;

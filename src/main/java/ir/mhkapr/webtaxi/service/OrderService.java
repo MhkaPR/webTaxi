@@ -71,8 +71,14 @@ public class OrderService {
                 .build();
         return OrderResponse.builder()
                 .price(newOrder.getPrice())
-                .origin(newOrder.getOrigin())
-                .destination(newOrder.getDestination())
+                .origin(LocationDTO.builder()
+                        .longitude(newOrder.getOrigin().getX())
+                        .latitude(newOrder.getOrigin().getY())
+                        .build())
+                .destination(LocationDTO.builder()
+                        .longitude(newOrder.getDestination().getX())
+                        .latitude(newOrder.getDestination().getY())
+                        .build())
                 .type(newOrder.getType())
                 .driverInfo(tempDriverInfoDTO)
                 .build();
