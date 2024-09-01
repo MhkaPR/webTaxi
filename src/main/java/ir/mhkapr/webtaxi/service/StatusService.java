@@ -36,42 +36,25 @@ public class StatusService {
         Map<String,Object> info =new HashMap<>();
         if(user.getStatus() == UserStatus.INACTIVE) info.put("message","you have not any trip!");
         else {
-            Order order = orderRepository.findPendingOrderByUserId(user.getUserId()).orElseThrow();
 
-            LocationDTO origin = LocationDTO.builder()
-                    .longitude(order.getOrigin().getX())
-                    .latitude(order.getOrigin().getY())
-                    .build();
-            LocationDTO destination = LocationDTO.builder()
-                    .longitude(order.getDestination().getX())
-                    .latitude(order.getDestination().getY())
-                    .build();
-
-            Driver driver = driverRepository.findById(order.getDriverId()).orElseThrow();
-            DriverInfoDTO driverInfo = DriverInfoDTO.builder()
-                    .baseInformation(UserUserInfoDTOMapper.INSTANCE.UserToUserInfoDTO(driver.getUser()))
-                    .licencePlate(driver.getVehicle().getLicencePlate())
-                    .vehicleType(driver.getVehicle().getVehicleType())
-                    .build();
-
-            OrderResponse orderResponse = OrderResponse.builder()
-                    .driverInfo(driverInfo)
-                    .price(order.getPrice())
-                    .type(order.getType())
-                    .origin(origin)
-                    .destination(destination)
-                    .build();
 
             switch (user.getStatus()) {
                 case PENDING_PAYMENT -> {
+                    Order order = orderRepository.findPendingOrderByUserId(user.getUserId()).orElseThrow();
+                    OrderResponse orderResponse = createOrderResponse(order);
                     info.put("message", "you should pay price!");
                     info.put("orderInformation", orderResponse);
                 }
                 case PAID -> {
+                    Order order = orderRepository.findPaidOrderByUserId(user.getUserId()).orElseThrow();
+                    OrderResponse orderResponse = createOrderResponse(order);
                     info.put("message", "trip expenses have been paid!");
                     info.put("orderInformation", orderResponse);
                 }
                 case DRIVING -> {
+                    Order order = orderRepository.findPendingOrderByUserId(user.getUserId())
+                            .or(() -> orderRepository.findPaidOrderByUserId(user.getUserId())).orElseThrow();
+                    OrderResponse orderResponse = createOrderResponse(order);
                     info.put("message", "you are driving");
                     info.put("orderInformation", orderResponse);
                     User customer = userRepository.findById(order.getUserId()).orElseThrow();
@@ -81,5 +64,30 @@ public class StatusService {
             }
         }
         return info;
+    }
+    private OrderResponse createOrderResponse(Order order){
+        LocationDTO origin = LocationDTO.builder()
+                .longitude(order.getOrigin().getX())
+                .latitude(order.getOrigin().getY())
+                .build();
+        LocationDTO destination = LocationDTO.builder()
+                .longitude(order.getDestination().getX())
+                .latitude(order.getDestination().getY())
+                .build();
+
+        Driver driver = driverRepository.findById(order.getDriverId()).orElseThrow();
+        DriverInfoDTO driverInfo = DriverInfoDTO.builder()
+                .baseInformation(UserUserInfoDTOMapper.INSTANCE.UserToUserInfoDTO(driver.getUser()))
+                .licencePlate(driver.getVehicle().getLicencePlate())
+                .vehicleType(driver.getVehicle().getVehicleType())
+                .build();
+
+        return OrderResponse.builder()
+                .driverInfo(driverInfo)
+                .price(order.getPrice())
+                .type(order.getType())
+                .origin(origin)
+                .destination(destination)
+                .build();
     }
 }
