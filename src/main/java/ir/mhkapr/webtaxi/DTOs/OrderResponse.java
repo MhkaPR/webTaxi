@@ -17,5 +17,4 @@ public class OrderResponse {
     OrderType type;
     Double price;
     DriverInfoDTO driverInfo;
-
 }
