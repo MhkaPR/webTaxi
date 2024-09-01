@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -52,13 +53,15 @@ public class StatusService {
                     info.put("orderInformation", orderResponse);
                 }
                 case DRIVING -> {
-                    Order order = orderRepository.findPendingOrderByUserId(user.getUserId())
-                            .or(() -> orderRepository.findPaidOrderByUserId(user.getUserId())).orElseThrow();
+                    Driver driver = driverRepository.findDriverByUserId(user.getUserId()).orElseThrow();
+                    Order order = orderRepository.findPendingOrderByDriverId(driver.getDriver_id())
+                            .or(() -> orderRepository.findPaidOrderByDriverId(driver.getDriver_id())).orElseThrow();
                     OrderResponse orderResponse = createOrderResponse(order);
                     info.put("message", "you are driving");
                     info.put("orderInformation", orderResponse);
                     User customer = userRepository.findById(order.getUserId()).orElseThrow();
                     info.put("customerInfo" , UserUserInfoDTOMapper.INSTANCE.UserToUserInfoDTO(customer));
+                    info.put("orderStatus" , order.getStatus());
                 }
 
             }

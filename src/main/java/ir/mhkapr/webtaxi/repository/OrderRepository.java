@@ -16,4 +16,9 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
 
     @Query(value = "select * from orders where user_id = :userId and status = 1", nativeQuery = true)
     public Optional<Order> findPaidOrderByUserId(@Param("userId") Long userId);
+
+    @Query(value = "select * from orders where driver_id = :driverId and status = 1", nativeQuery = true)
+    public Optional<Order> findPaidOrderByDriverId(@Param("driverId") Long driverId);
+    @Query(value = "select * from orders where driver_id = :driverId and status = 0", nativeQuery = true)
+    public Optional<Order> findPendingOrderByDriverId(@Param("driverId") Long driverId);
 }

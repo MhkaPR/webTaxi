@@ -17,12 +17,13 @@ public interface DriverRepository extends JpaRepository<Driver,Long> {
 //    @Query(value = "",nativeQuery = true)
 //    public Optional<Driver> findDriverByOrigin(Point origin);
 
-    @Query(value = "select exists(select 1 from drivers where user_id = :userId) as user_exists",nativeQuery = true)
-    public Boolean existsDriverByUserId(@Param("userId") Long userId);
+    @Query(value = "select * from drivers where user_id = :userId",nativeQuery = true)
+    public Optional<Driver> findDriverByUserId(@Param("userId") Long userId);
 
     @Query(value = "select driver_id,st_distance(" +
             "st_transform(d.location,3857) , " +
             "st_transform(st_setsrid(:point , 4326),3857)) as distance " +
             "from drivers d order by distance limit 1", nativeQuery = true)
     public Optional<DriverDistanceProjection> findDriversFromPoint(@Param("point") Point point);
+
 }

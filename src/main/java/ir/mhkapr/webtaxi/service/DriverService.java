@@ -59,6 +59,7 @@ public class DriverService {
         return geometryFactory.createPoint(new Coordinate(longitude,latitude));
     }
     private Boolean existsDriverByUserId(Long userId){
-       return driverRepository.existsDriverByUserId(userId);
+       Optional<Driver> driverOptional = driverRepository.findDriverByUserId(userId);
+       return driverOptional.isPresent();
     }
 }
