@@ -67,8 +67,9 @@ public class OrderService {
         DriverInfoDTO tempDriverInfoDTO = DriverInfoDTO.builder()
                 .vehicleType(foundDriver.getVehicle().getVehicleType())
                 .licencePlate(foundDriver.getVehicle().getLicencePlate())
-                .baseInformation(UserUserInfoDTOMapper.INSTANCE.UserToUserInfoDTO(user))
+                .baseInformation(UserUserInfoDTOMapper.INSTANCE.UserToUserInfoDTO(foundDriver.getUser()))
                 .build();
+
         return OrderResponse.builder()
                 .price(newOrder.getPrice())
                 .origin(LocationDTO.builder()

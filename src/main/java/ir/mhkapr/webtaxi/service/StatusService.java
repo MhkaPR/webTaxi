@@ -49,7 +49,7 @@ public class StatusService {
 
             Driver driver = driverRepository.findById(order.getDriverId()).orElseThrow();
             DriverInfoDTO driverInfo = DriverInfoDTO.builder()
-                    .baseInformation(UserUserInfoDTOMapper.INSTANCE.UserToUserInfoDTO(user))
+                    .baseInformation(UserUserInfoDTOMapper.INSTANCE.UserToUserInfoDTO(driver.getUser()))
                     .licencePlate(driver.getVehicle().getLicencePlate())
                     .vehicleType(driver.getVehicle().getVehicleType())
                     .build();

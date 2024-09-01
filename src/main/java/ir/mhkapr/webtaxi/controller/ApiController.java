@@ -26,4 +26,8 @@ public class ApiController {
     public ResponseEntity<StatusResponse> getStatus(){
         return ResponseEntity.ok(statusService.getStatus());
     }
+    @GetMapping("/payment")
+    public ResponseEntity<OrderResponse> payment(){
+
+    }
 }

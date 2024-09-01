@@ -21,8 +21,9 @@ public class DriverFinderService {
     public Driver findDriver(Point origin , Double tolerance) throws DriverNotFoundInRangeException {
         Optional<DriverDistanceProjection> foundDriver = driverRepository.findDriversFromPoint(origin);
         if(foundDriver.isPresent()){
-            if(foundDriver.get().getDistance() <= tolerance && isFreeDriver(foundDriver.get().getDriver())) {
-                return foundDriver.get().getDriver();
+            Driver driver = driverRepository.findById(foundDriver.get().getDriverId()).orElseThrow();
+            if(foundDriver.get().getDistance() <= tolerance && isFreeDriver(driver)) {
+                return driver;
             }
         }
         throw new DriverNotFoundInRangeException();

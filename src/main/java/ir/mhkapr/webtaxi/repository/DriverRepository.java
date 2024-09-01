@@ -20,7 +20,7 @@ public interface DriverRepository extends JpaRepository<Driver,Long> {
     @Query(value = "select exists(select 1 from drivers where user_id = :userId) as user_exists",nativeQuery = true)
     public Boolean existsDriverByUserId(@Param("userId") Long userId);
 
-    @Query(value = "select d as driver,st_distance(" +
+    @Query(value = "select driver_id,st_distance(" +
             "st_transform(d.location,3857) , " +
             "st_transform(st_setsrid(:point , 4326),3857)) as distance " +
             "from drivers d order by distance limit 1", nativeQuery = true)
