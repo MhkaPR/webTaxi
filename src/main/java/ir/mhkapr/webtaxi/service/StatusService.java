@@ -37,8 +37,6 @@ public class StatusService {
         Map<String,Object> info =new HashMap<>();
         if(user.getStatus() == UserStatus.INACTIVE) info.put("message","you have not any trip!");
         else {
-
-
             switch (user.getStatus()) {
                 case PENDING_PAYMENT -> {
                     Order order = orderRepository.findPendingOrderByUserId(user.getUserId()).orElseThrow();
@@ -63,7 +61,6 @@ public class StatusService {
                     info.put("customerInfo" , UserUserInfoDTOMapper.INSTANCE.UserToUserInfoDTO(customer));
                     info.put("orderStatus" , order.getStatus());
                 }
-
             }
         }
         return info;

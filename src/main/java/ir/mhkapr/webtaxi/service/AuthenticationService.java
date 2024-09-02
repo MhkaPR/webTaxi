@@ -9,8 +9,10 @@ import ir.mhkapr.webtaxi.entity.enums.UserStatus;
 import ir.mhkapr.webtaxi.exception.UserAlreadyExistsException;
 import ir.mhkapr.webtaxi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,11 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    @Value("${token.remaining-time}")
+    private Long REMAINING_TIME_TOKEN;
+    @Value("${token.remaining-refresh-time}")
+    private Long REMAINING_REFRESH_TIME_TOKEN;
+
     public AuthenticationResponse register(RegisterRequest request) throws UserAlreadyExistsException {
         var user = User.builder()
                 .phoneNumber(request.getPhoneNumber())
@@ -39,10 +46,12 @@ public class AuthenticationService {
 
         userRepository.save(user);
 
-        String token =  jwtService.generateToken(user);
+        String token =  jwtService.generateToken(user,REMAINING_TIME_TOKEN);
+        String refreshToken = jwtService.generateToken(user,REMAINING_REFRESH_TIME_TOKEN);
 
         return AuthenticationResponse.builder()
                 .token(token)
+                .refreshToken(refreshToken)
                 .build();
     }
     public AuthenticationResponse login(LoginRequest request)
@@ -56,10 +65,22 @@ public class AuthenticationService {
         var user = userRepository.findByPhoneNumber(request.getPhoneNumber())
                 .orElseThrow(() -> new UsernameNotFoundException("in authentication user not found!"));
 
-        var jwtToken = jwtService.generateToken(user);
+        String token =  jwtService.generateToken(user,REMAINING_TIME_TOKEN);
+        String refreshToken = jwtService.generateToken(user,REMAINING_REFRESH_TIME_TOKEN);
 
         return AuthenticationResponse.builder()
-                .token(jwtToken)
+                .token(token)
+                .refreshToken(refreshToken)
+                .build();
+    }
+    public AuthenticationResponse refreshToken(){
+        String phoneNumber = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByPhoneNumber(phoneNumber).orElseThrow();
+        String token =  jwtService.generateToken(user,REMAINING_TIME_TOKEN);
+        String refreshToken = jwtService.generateToken(user,REMAINING_REFRESH_TIME_TOKEN);
+        return AuthenticationResponse.builder()
+                .token(token)
+                .refreshToken(refreshToken)
                 .build();
     }
 }

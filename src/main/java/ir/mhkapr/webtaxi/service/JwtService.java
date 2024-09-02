@@ -40,18 +40,18 @@ public class JwtService {
 
     }
 
-    public  String generateToken(UserDetails userDetails)
+    public  String generateToken(UserDetails userDetails,Long remainingValidityTime)
     {
-        return generateToken(new HashMap<>(),userDetails);
+        return generateToken(new HashMap<>(),userDetails , remainingValidityTime);
     }
-    public String generateToken(Map<String,Object> extraClaims, UserDetails userDetails)
+    public String generateToken(Map<String,Object> extraClaims, UserDetails userDetails , Long remainingValidityTime)
     {
 
         return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + remainingValidityTime))
                 .signWith(SignatureAlgorithm.HS256, getSignInKey())
                 .compact();
     }
