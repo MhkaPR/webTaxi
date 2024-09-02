@@ -45,7 +45,7 @@ public class OrderService {
         Point originPoint = createPoint(request.getOrigin());
         Point destinationPoint = createPoint(request.getDestination());
 
-        Driver foundDriver = driverFinderService.findDriver(originPoint,TOLERANCE);
+        Driver foundDriver = driverFinderService.findDriver(originPoint,TOLERANCE,request.getOrderType());
         setUserStatus(foundDriver.getUser(),UserStatus.DRIVING);
 
         Double price = priceCalculatorService.calculatePrice(originPoint,destinationPoint,request.getOrderType());
