@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class NoticeDriverRequestDTO {
+public class NoticeDriverNewTripRequestDTO {
     UserInfoDTO customerInfo;
     Double price;
-
+    LocationDTO origin;
+    LocationDTO destination;
 }
