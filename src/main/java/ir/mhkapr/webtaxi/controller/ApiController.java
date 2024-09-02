@@ -1,5 +1,6 @@
 package ir.mhkapr.webtaxi.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import ir.mhkapr.webtaxi.DTOs.OrderRequest;
 import ir.mhkapr.webtaxi.DTOs.OrderResponse;
 import ir.mhkapr.webtaxi.DTOs.PaymentResponse;
@@ -22,7 +23,7 @@ public class ApiController {
     private final PaymentService paymentService;
     @PostMapping("/register-order")
     public ResponseEntity<OrderResponse> registerOrder(@RequestBody OrderRequest request)
-            throws UserBusynessException, DriverNotFoundInRangeException {
+            throws UserBusynessException, DriverNotFoundInRangeException, JsonProcessingException {
         return ResponseEntity.ok(orderService.registerOrder(request));
     }
     @GetMapping("/get-status")

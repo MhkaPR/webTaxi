@@ -1,5 +1,6 @@
 package ir.mhkapr.webtaxi.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import ir.mhkapr.webtaxi.DTOs.*;
 import ir.mhkapr.webtaxi.entity.Driver;
 import ir.mhkapr.webtaxi.entity.Order;
@@ -31,11 +32,12 @@ public class OrderService {
     private final UserRepository userRepository;
     private final DriverFinderService driverFinderService;
     private final PriceCalculatorService priceCalculatorService;
+    private final Publisher publisher;
     private Boolean isFreeCustomer(User user){
         return user.getStatus() == UserStatus.INACTIVE && user.getRole() != Role.DRIVER;
     }
     public OrderResponse registerOrder(OrderRequest request)
-            throws UserBusynessException, DriverNotFoundInRangeException {
+            throws UserBusynessException, DriverNotFoundInRangeException, JsonProcessingException {
 
         String phoneNumber = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByPhoneNumber(phoneNumber).orElseThrow();
@@ -69,6 +71,9 @@ public class OrderService {
                 .licencePlate(foundDriver.getVehicle().getLicencePlate())
                 .baseInformation(UserUserInfoDTOMapper.INSTANCE.UserToUserInfoDTO(foundDriver.getUser()))
                 .build();
+
+        publisher.noticeDriverNewTrip(UserUserInfoDTOMapper.INSTANCE.UserToUserInfoDTO(user)
+                ,price,request.getOrigin() , request.getDestination());
 
         return OrderResponse.builder()
                 .price(newOrder.getPrice())
