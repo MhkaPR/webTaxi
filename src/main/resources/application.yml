@@ -19,3 +19,7 @@ server:
 token:
   remaining-time: 300000
   remaining-refresh-time: 864000000
+
+rabbitmq:
+  exchange: web.taxi.exchange
+  notice-driver-routing-key: notice.driver.key
