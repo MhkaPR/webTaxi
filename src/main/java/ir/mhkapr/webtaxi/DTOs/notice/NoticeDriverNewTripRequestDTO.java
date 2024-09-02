@@ -1,5 +1,7 @@
-package ir.mhkapr.webtaxi.DTOs;
+package ir.mhkapr.webtaxi.DTOs.notice;
 
+import ir.mhkapr.webtaxi.DTOs.LocationDTO;
+import ir.mhkapr.webtaxi.DTOs.UserInfoDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

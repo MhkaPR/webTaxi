@@ -1,5 +1,6 @@
 package ir.mhkapr.webtaxi.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import ir.mhkapr.webtaxi.DTOs.PaymentResponse;
 import ir.mhkapr.webtaxi.entity.Order;
 import ir.mhkapr.webtaxi.entity.User;
@@ -19,7 +20,8 @@ import java.util.Date;
 public class PaymentService {
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
-    public PaymentResponse pay() throws UserBusynessException {
+    private final PublisherService publisher;
+    public PaymentResponse pay() throws UserBusynessException, JsonProcessingException {
         String phoneNumber = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByPhoneNumber(phoneNumber).orElseThrow();
         if(!hasUserPendingStatus(user)) throw new UserBusynessException();
@@ -30,11 +32,12 @@ public class PaymentService {
         order.setStatus(OrderStatus.PAID);
         order.setFinishedAt(new Date());
         order = orderRepository.save(order);
-
-        return PaymentResponse.builder()
+        PaymentResponse response = PaymentResponse.builder()
                 .pricePaid(order.getPrice())
                 .time(order.getFinishedAt())
                 .build();
+        publisher.noticeDriverPaidPrice(response);
+        return response;
     }
      private Boolean hasUserPendingStatus(User user){
         return user.getStatus() == UserStatus.PENDING_PAYMENT;

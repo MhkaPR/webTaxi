@@ -31,7 +31,7 @@ public class ApiController {
         return ResponseEntity.ok(statusService.getStatus());
     }
     @GetMapping("/payment")
-    public ResponseEntity<PaymentResponse> payment() throws UserBusynessException {
+    public ResponseEntity<PaymentResponse> payment() throws UserBusynessException, JsonProcessingException {
         return ResponseEntity.ok(paymentService.pay());
     }
 }

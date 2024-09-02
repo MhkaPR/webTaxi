@@ -6,12 +6,10 @@ import ir.mhkapr.webtaxi.entity.Driver;
 import ir.mhkapr.webtaxi.entity.Order;
 import ir.mhkapr.webtaxi.entity.User;
 import ir.mhkapr.webtaxi.entity.enums.OrderStatus;
-import ir.mhkapr.webtaxi.entity.enums.OrderType;
 import ir.mhkapr.webtaxi.entity.enums.Role;
 import ir.mhkapr.webtaxi.entity.enums.UserStatus;
 import ir.mhkapr.webtaxi.exception.DriverNotFoundInRangeException;
 import ir.mhkapr.webtaxi.exception.UserBusynessException;
-import ir.mhkapr.webtaxi.exception.UserNotFoundException;
 import ir.mhkapr.webtaxi.mapper.UserUserInfoDTOMapper;
 import ir.mhkapr.webtaxi.repository.OrderRepository;
 import ir.mhkapr.webtaxi.repository.UserRepository;
@@ -32,7 +30,7 @@ public class OrderService {
     private final UserRepository userRepository;
     private final DriverFinderService driverFinderService;
     private final PriceCalculatorService priceCalculatorService;
-    private final Publisher publisher;
+    private final PublisherService publisher;
     private Boolean isFreeCustomer(User user){
         return user.getStatus() == UserStatus.INACTIVE && user.getRole() != Role.DRIVER;
     }

@@ -23,3 +23,4 @@ token:
 rabbitmq:
   exchange: web.taxi.exchange
   notice-driver-routing-key: notice.driver.key
+  notice-driver-paid-price-routing-key: notice.driver.paid.price.key
