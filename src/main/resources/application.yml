@@ -17,5 +17,5 @@ server:
   port: 3000
 
 token:
-  remaining-time: 300
+  remaining-time: 300000
   remaining-refresh-time: 864000000
