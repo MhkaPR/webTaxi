@@ -7,6 +7,7 @@ import ir.mhkapr.webtaxi.entity.User;
 import ir.mhkapr.webtaxi.entity.enums.OrderStatus;
 import ir.mhkapr.webtaxi.entity.enums.UserStatus;
 import ir.mhkapr.webtaxi.exception.UserBusynessException;
+import ir.mhkapr.webtaxi.mapper.OrderOrderLogDTOMapper;
 import ir.mhkapr.webtaxi.repository.OrderRepository;
 import ir.mhkapr.webtaxi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +41,8 @@ public class PaymentService {
         publisher.noticeDriverPaidPrice(response);
 
         publisher.noticeLog(LogLevel.INFO,"customer paid and was registered in database" ,
-                "webTaxi.root.service.StatusService:getStatus",new Date() , order);
+                "webTaxi.root.service.PaymentService:pay",new Date() ,
+                OrderOrderLogDTOMapper.INSTANCE.OrderToOrderLogDTO(order));
 
         return response;
     }
