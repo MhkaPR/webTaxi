@@ -42,7 +42,7 @@ public class PaymentService {
 
         publisher.noticeLog(LogLevel.INFO,"customer paid and was registered in database" ,
                 "webTaxi.root.service.PaymentService:pay",new Date() ,
-                OrderOrderLogDTOMapper.INSTANCE.OrderToOrderLogDTO(order));
+                OrderOrderLogDTOMapper.INSTANCE.toOrderLogDTO(order));
 
         return response;
     }

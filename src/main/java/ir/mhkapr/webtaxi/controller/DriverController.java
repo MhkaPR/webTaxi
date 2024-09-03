@@ -1,5 +1,6 @@
 package ir.mhkapr.webtaxi.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import ir.mhkapr.webtaxi.DTOs.DriverAuthenticationResponse;
 import ir.mhkapr.webtaxi.DTOs.DriverRegisterRequest;
 import ir.mhkapr.webtaxi.exception.DriverAlreadyExistsException;
@@ -19,7 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class DriverController {
     private final DriverService driverService;
     @PostMapping("/register-driver")
-    public ResponseEntity<DriverAuthenticationResponse> register(@RequestBody DriverRegisterRequest request) throws UserNotFoundException, UserAlreadyExistsException, DriverAlreadyExistsException {
+    public ResponseEntity<DriverAuthenticationResponse> register(@RequestBody DriverRegisterRequest request)
+            throws UserNotFoundException, UserAlreadyExistsException,
+            DriverAlreadyExistsException, JsonProcessingException {
        return ResponseEntity.ok(driverService.register(request));
     }
 }

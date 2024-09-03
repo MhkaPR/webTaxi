@@ -19,8 +19,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderLogDTO {
-    Point origin;
-    Point destination;
+    LocationDTO origin;
+    LocationDTO destination;
     @Enumerated(EnumType.STRING)
     OrderType type;
     Double price;

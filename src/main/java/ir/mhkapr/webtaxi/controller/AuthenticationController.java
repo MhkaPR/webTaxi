@@ -1,5 +1,6 @@
 package ir.mhkapr.webtaxi.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import ir.mhkapr.webtaxi.DTOs.LoginRequest;
 import ir.mhkapr.webtaxi.DTOs.AuthenticationResponse;
 import ir.mhkapr.webtaxi.DTOs.RegisterRequest;
@@ -18,11 +19,11 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) throws UserAlreadyExistsException {
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) throws UserAlreadyExistsException, JsonProcessingException {
         return ResponseEntity.ok(authenticationService.register(request));
     }
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest request){
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest request) throws JsonProcessingException {
         return ResponseEntity.ok(authenticationService.login(request));
     }
     @GetMapping("/home")
@@ -31,7 +32,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/refresh-token")
-    public ResponseEntity<AuthenticationResponse> refreshToken(){
+    public ResponseEntity<AuthenticationResponse> refreshToken() throws JsonProcessingException {
         return ResponseEntity.ok(authenticationService.refreshToken());
     }
 }
