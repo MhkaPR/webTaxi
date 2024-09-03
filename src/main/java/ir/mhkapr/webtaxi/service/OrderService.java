@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
+import org.springframework.boot.logging.LogLevel;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -73,7 +74,7 @@ public class OrderService {
         publisher.noticeDriverNewTrip(UserUserInfoDTOMapper.INSTANCE.UserToUserInfoDTO(user)
                 ,price,request.getOrigin() , request.getDestination());
 
-        return OrderResponse.builder()
+        OrderResponse orderResponse = OrderResponse.builder()
                 .price(newOrder.getPrice())
                 .origin(LocationDTO.builder()
                         .longitude(newOrder.getOrigin().getX())
@@ -86,6 +87,9 @@ public class OrderService {
                 .type(newOrder.getType())
                 .driverInfo(tempDriverInfoDTO)
                 .build();
+        publisher.noticeLog(LogLevel.INFO,"a new order registered" ,
+                "webTaxi.root.service.OrderService:registerOrder",new Date() , orderResponse);
+        return orderResponse;
     }
     private Point createPoint(LocationDTO locationDTO){
         GeometryFactory geometryFactory = new GeometryFactory();
