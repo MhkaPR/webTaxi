@@ -1,5 +1,6 @@
 package ir.mhkapr.webtaxi.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ser.std.StdArraySerializers;
 import ir.mhkapr.webtaxi.DTOs.DriverAuthenticationResponse;
 import ir.mhkapr.webtaxi.DTOs.DriverRegisterRequest;
@@ -18,10 +19,12 @@ import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
+import org.springframework.boot.logging.LogLevel;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -29,8 +32,9 @@ import java.util.Optional;
 public class DriverService {
     private final DriverRepository driverRepository;
     private final UserRepository userRepository;
+    private final PublisherService publisherService;
     public DriverAuthenticationResponse register(DriverRegisterRequest request)
-            throws UserAlreadyExistsException, UserNotFoundException, DriverAlreadyExistsException {
+            throws UserAlreadyExistsException, UserNotFoundException, DriverAlreadyExistsException, JsonProcessingException {
 
         Point driverLocation = createPoint(request.getLocation().getLongitude(), request.getLocation().getLatitude());
 
@@ -49,10 +53,13 @@ public class DriverService {
         userOfDriver.setRole(Role.DRIVER);
         userRepository.save(userOfDriver);
 
-        return DriverAuthenticationResponse.builder()
+        DriverAuthenticationResponse driverAuthenticationResponse = DriverAuthenticationResponse.builder()
                 .userInfo(UserUserInfoDTOMapper.INSTANCE.UserToUserInfoDTO(newDriver.getUser()))
                 .vehicleInfo(VehicleVehicleInfoDTOMapper.INSTANCE.VehicleToVehicleInfoDTO(newDriver.getVehicle()))
                 .build();
+        publisherService.noticeLog(LogLevel.INFO,"a new driver registered" ,
+                "webTaxi.root.service.DriverService:register",new Date() , driverAuthenticationResponse);
+        return driverAuthenticationResponse;
     }
     private Point createPoint(Double longitude ,Double latitude){
         GeometryFactory geometryFactory = new GeometryFactory();
