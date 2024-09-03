@@ -27,7 +27,7 @@ public class ApiController {
         return ResponseEntity.ok(orderService.registerOrder(request));
     }
     @GetMapping("/get-status")
-    public ResponseEntity<StatusResponse> getStatus(){
+    public ResponseEntity<StatusResponse> getStatus() throws JsonProcessingException {
         return ResponseEntity.ok(statusService.getStatus());
     }
     @GetMapping("/payment")

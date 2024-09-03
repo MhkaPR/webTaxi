@@ -10,6 +10,7 @@ import ir.mhkapr.webtaxi.exception.UserBusynessException;
 import ir.mhkapr.webtaxi.repository.OrderRepository;
 import ir.mhkapr.webtaxi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.logging.LogLevel;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,10 @@ public class PaymentService {
                 .time(order.getFinishedAt())
                 .build();
         publisher.noticeDriverPaidPrice(response);
+
+        publisher.noticeLog(LogLevel.INFO,"customer paid and was registered in database" ,
+                "webTaxi.root.service.StatusService:getStatus",new Date() , order);
+
         return response;
     }
      private Boolean hasUserPendingStatus(User user){

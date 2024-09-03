@@ -1,5 +1,6 @@
 package ir.mhkapr.webtaxi.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import ir.mhkapr.webtaxi.DTOs.DriverInfoDTO;
 import ir.mhkapr.webtaxi.DTOs.LocationDTO;
 import ir.mhkapr.webtaxi.DTOs.OrderResponse;
@@ -13,9 +14,11 @@ import ir.mhkapr.webtaxi.repository.DriverRepository;
 import ir.mhkapr.webtaxi.repository.OrderRepository;
 import ir.mhkapr.webtaxi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.logging.LogLevel;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -26,14 +29,18 @@ public class StatusService {
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
     private final DriverRepository driverRepository;
-    public StatusResponse getStatus(){
+    private final PublisherService publisherService;
+    public StatusResponse getStatus() throws JsonProcessingException {
         String phoneNumber = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByPhoneNumber(phoneNumber).orElseThrow();
-        return StatusResponse.builder()
+        StatusResponse statusResponse = StatusResponse.builder()
                 .info(buildStatusResponse(user))
                 .build();
+        publisherService.noticeLog(LogLevel.INFO,"status prepared and want to send to controller" ,
+                "webTaxi.root.service.StatusService:getStatus",new Date() , statusResponse);
+        return statusResponse;
     }
-    private Map<String,Object> buildStatusResponse(User user){
+    private Map<String,Object> buildStatusResponse(User user) throws JsonProcessingException {
         Map<String,Object> info =new HashMap<>();
         if(user.getStatus() == UserStatus.INACTIVE) info.put("message","you have not any trip!");
         else {
@@ -58,8 +65,8 @@ public class StatusService {
                     info.put("message", "you are driving");
                     info.put("orderInformation", orderResponse);
                     User customer = userRepository.findById(order.getUserId()).orElseThrow();
-                    info.put("customerInfo" , UserUserInfoDTOMapper.INSTANCE.UserToUserInfoDTO(customer));
-                    info.put("orderStatus" , order.getStatus());
+                    info.put("customerInfo", UserUserInfoDTOMapper.INSTANCE.UserToUserInfoDTO(customer));
+                    info.put("orderStatus", order.getStatus());
                 }
             }
         }
